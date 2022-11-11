@@ -40,7 +40,7 @@ class CompanyCustomer(models.Model):
     '''
     company = models.ForeignKey(WasteManagementCompany, on_delete=models.CASCADE)
     customer = models.ForeignKey(User, on_delete=models.CASCADE)
-    subscribed_date = models.DateField( auto_now=False, auto_now_add=False)
+    subscribed_date = models.DateField(auto_now_add=True)
     is_still_a_customer = models.BooleanField() #if false then customer lost 
 
 

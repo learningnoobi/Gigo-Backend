@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import exceptions,generics,filters
@@ -36,3 +36,28 @@ class CompanyCustomerList(generics.ListAPIView):
         company = WasteManagementCompany.objects.filter(owner = user).first()
         tracks =company.companycustomer_set.filter(is_still_a_customer=True)
         return tracks
+
+class SubscribeToCompany(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self,request):
+        data = request.data
+        user = request.user
+        company_id = data.get('company_id')
+        company = get_object_or_404(WasteManagementCompany,id=company_id)
+        user.subscribed_company = company
+        user.save()
+        CompanyCustomer.objects.filter(customer=user).update(is_still_a_customer=False)
+        CompanyCustomer.objects.create(company=company,customer=user,is_still_a_customer=True)
+        return Response({'detail':f'Successfully Subscribed to {company.name}.'})
+
+class RemoveSubscribeOfCompany(APIView):
+    def post(self,request):
+        data = request.data
+        user = request.user
+        company_id = data.get('company_id')
+        company = get_object_or_404(WasteManagementCompany,id=company_id)
+        user.subscribed_company = None
+        user.save()
+        CompanyCustomer.objects.filter(customer=user).update(is_still_a_customer=False)
+        return Response({'detail':f'Successfully Unsubscribed to {company.name}.'})
