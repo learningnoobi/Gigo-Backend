@@ -13,12 +13,6 @@ def send_transaction_and_print_status(transaction):
         print(status)
 
 
-
-# MAP_ROLE_AND_DOMAIN={
-#     'Admin':'admin'
-# }
-
-
 def give_me_keys():
     private_key = IrohaCrypto.private_key()
     print('private : ',private_key)
@@ -44,9 +38,10 @@ def create_iroha_account(username):
     return keys['private_key']
 
 
-def get_asset_of_user(account_id,private_key):
+def get_asset_of_user(account_id,private_key='f101537e319568c765b2cc89698325604991dca57b9716b58016b253506cab70'):
     iroha_user = Iroha(account_id)
-    query = iroha_user.query('GetAccountAssets', account_id=account_id)
+    print('account_id',account_id ,private_key)
+    query = iroha_user.query('GetAccountAssets',creator_account='admin@gigo', account_id=account_id)
     IrohaCrypto.sign_query(query, private_key)
     response = net_3.send_query(query)
     data = response.account_assets_response
