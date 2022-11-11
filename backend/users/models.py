@@ -49,7 +49,7 @@ class User(AbstractUser):
     )
 
     username = models.CharField(max_length=200,unique=True)
-    iroha_name = models.CharField(max_length=200,unique=True) #unique name of iroha network
+    iroha_name = models.CharField(max_length=200,unique=True,null=True,blank=True) #unique name of iroha network
     email = models.EmailField(max_length=200, unique=True)
     bio = models.TextField(blank=True ,default="")
     avatar = models.ImageField(default='default.jpg', upload_to='avatars')
