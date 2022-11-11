@@ -5,7 +5,7 @@ from .serializers import UserLessSerializer,MyTokenObtainPairSerializer
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from .models import User
 from rest_framework import exceptions
-from .utils import create_iroha_account, get_asset_of_user
+from .utils import *
 from mainproject.iroha_config import *
 from django.db import transaction
 from google.protobuf.json_format import MessageToJson,MessageToDict
@@ -84,7 +84,7 @@ class GetAccountAsset(APIView):
             raise exceptions.APIException("Private key needed !")
         try:
             print(user.iroha_name)
-            asset_detail = get_asset_of_user(user.iroha_name)
+            asset_detail = get_asset_of_user(user.iroha_name,private_key)
             print('asset_detail : ',asset_detail)
 
             serialized = MessageToDict(asset_detail)['accountAssets']
@@ -122,20 +122,28 @@ class TransferTrashCoin(APIView):
 
 
 
-# class GetAccountTransactions(APIView):
-#     permission_classes = [IsAuthenticated]
-#     def get(self, request):
-#         user = request.user
-#         data = request.data
-#         private_key = data.get('private_key')
-#         if not private_key:
-#             raise exceptions.APIException("Private key needed !")
-#         try:
-#             asset_detail = get_asset_of_user(user.iroha_name,private_key)
-#             serialized = MessageToDict(asset_detail)['accountAssets']
-#             return Response({'data':serialized})
-#         except Exception as e:
-#             raise exceptions.APIException(str(e))
+class GetAccountTransactions(APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self, request):
+        user = request.user
+        data = request.data
+        private_key = data.get('private_key')
+        if not private_key:
+            raise exceptions.APIException("Private key needed !")
+        try:
+            # serialized = MessageToDict(asset_detail)['accountAssets']
+            transactions = get_transaction_of_user(user.iroha_name,private_key)
+            serialized = MessageToDict(transactions)
+            print('serialized ',serialized)
+
+            # tra_data = transactions.transactions_page_response.transactions
+            # datas =[]
+            # for li in tra_data:
+            #     datas.append(li.payload.reduced_payload)
+            context={"transactions":'asdf'}
+            return Response(serialized['transactionsPageResponse']['transactions'])
+        except Exception as e:
+            raise exceptions.APIException(str(e))
 
 
 

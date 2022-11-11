@@ -38,11 +38,20 @@ def create_iroha_account(username):
     return keys['private_key']
 
 
-def get_asset_of_user(account_id,private_key='f101537e319568c765b2cc89698325604991dca57b9716b58016b253506cab70'):
+def get_asset_of_user(account_id,private_key):
     iroha_user = Iroha(account_id)
     print('account_id',account_id ,private_key)
-    query = iroha_user.query('GetAccountAssets',creator_account='admin@gigo', account_id=account_id)
+    query = iroha_user.query('GetAccountAssets',creator_account=account_id, account_id=account_id)
     IrohaCrypto.sign_query(query, private_key)
     response = net_3.send_query(query)
     data = response.account_assets_response
     return data
+
+
+
+def get_transaction_of_user(user_id,private_key):
+    iroha_id = Iroha(user_id)
+    query = iroha_id.query('GetAccountTransactions',  creator_account=user_id, account_id=user_id, page_size=20)
+    IrohaCrypto.sign_query(query,private_key)
+    response = net_3.send_query(query)
+    return response

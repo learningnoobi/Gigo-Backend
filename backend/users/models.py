@@ -55,6 +55,7 @@ class User(AbstractUser):
     avatar = models.ImageField(default='default.jpg', upload_to='avatars')
     qr_code = models.ImageField(null=True,blank=True,upload_to='qrcode')
     role = models.CharField(choices=R_TYPE, max_length=20,default='Customer')
+    
     objects = CustomUserManager()
     USERNAME_FIELD = 'email'
    
