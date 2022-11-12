@@ -68,3 +68,7 @@ class User(AbstractUser):
 
     def __str__(self):
         return f'{self.username}'
+
+
+# class UserVoucher(models.Model):
+#     given_by = models.CharField(max_length=200)

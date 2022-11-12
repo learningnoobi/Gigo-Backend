@@ -125,24 +125,28 @@ class TransferTrashCoin(APIView):
 
 class GetAccountTransactions(APIView):
     permission_classes = [IsAuthenticated]
-    def get(self, request):
+    def post(self, request):
         user = request.user
         data = request.data
         private_key = data.get('private_key')
         if not private_key:
             raise exceptions.APIException("Private key needed !")
         try:
-            # serialized = MessageToDict(asset_detail)['accountAssets']
             transactions = get_transaction_of_user(user.iroha_name,private_key)
-            serialized = MessageToDict(transactions)
-            print('serialized ',serialized)
-
-            # tra_data = transactions.transactions_page_response.transactions
-            # datas =[]
-            # for li in tra_data:
-            #     datas.append(li.payload.reduced_payload)
-            context={"transactions":'asdf'}
-            return Response(serialized['transactionsPageResponse']['transactions'])
+            tra_data = transactions.transactions_page_response.transactions
+            datas =[]
+            for li in tra_data:
+                d=li.payload.reduced_payload
+                dd_is = MessageToDict(d)
+                print(dd_is)
+                # time_stamp = dd_is
+                timestamp = dd_is['createdTime']
+                serialized_data = dd_is['commands'][0].get('transferAsset')
+                
+                if serialized_data:
+                    serialized_data['timestamp']=timestamp
+                    datas.append(serialized_data)
+            return Response({'transactions':datas})
         except Exception as e:
             raise exceptions.APIException(str(e))
 
