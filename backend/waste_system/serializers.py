@@ -11,7 +11,12 @@ class WasteCompanySerializer(serializers.ModelSerializer):
         fields = "__all__"
     
     def get_have_i_subscribed(self,obj):
-        return False
+        request =self.context.get('request')
+        user = request.user
+
+        if not user.is_authenticated:
+            return False
+        return obj == user.subscribed_company
 
 
 class CompanyCustomerSerializers(serializers.ModelSerializer):

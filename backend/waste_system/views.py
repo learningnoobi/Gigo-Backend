@@ -17,8 +17,14 @@ class WasteCompanyList(generics.ListAPIView):
         filters.SearchFilter,
     )
 
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context["request"] = self.request
+        return context
+
     def get_queryset(self, *args, **kwargs):
         return super().get_queryset()
+
       
 
 class CompanyCustomerList(generics.ListAPIView):
