@@ -86,12 +86,13 @@ class GetAccountAsset(APIView):
             print(user.iroha_name)
             asset_detail = get_asset_of_user(user.iroha_name,private_key)
             print('asset_detail : ',asset_detail)
-
+            print('asset girls ' ,asset_detail)
             serialized = MessageToDict(asset_detail)['accountAssets']
+
             print('serialized ',asset_detail)
             return Response(serialized)
         except Exception as e:
-            print(e)
+            print('error is ',e)
             raise exceptions.APIException(str(e))
 
 
@@ -113,7 +114,7 @@ class TransferTrashCoin(APIView):
         tx = iroha_user.transaction(
         [iroha_user.command(
             'TransferAsset', src_account_id=user.iroha_name, dest_account_id=to_user_name,
-            asset_id='trashcoin#gigo', amount='1'
+            asset_id='mohorcoin#gigo', amount='0.50'
         )])
         IrohaCrypto.sign_transaction(tx, data.get('private_key'))
         send_transaction_and_print_status(tx)

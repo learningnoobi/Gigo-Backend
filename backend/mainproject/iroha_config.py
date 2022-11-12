@@ -31,9 +31,7 @@ iroha_admin = Iroha(ADMIN_ACCOUNT_ID)
 
 private_keys ={
     'admin@gigo':'f101537e319568c765b2cc89698325604991dca57b9716b58016b253506cab70',
-    'pratik@gigo':'d81fbceb694bed07e25396b6daa056da810bf1189e2e30fb7151b857cbedeaac',
-    'sam':'9c28f58effcd46a2266d332d5a53198a6a4d7ba2d2dc0fd99640ba95cf8190a1',
-    'arpan':'06aa10e60c416bcb3f5ecbf487337baa13c7ff82e84ad89fa2d4fde90842199f'
+   
 }
 
 def trace(func):

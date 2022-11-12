@@ -201,7 +201,7 @@ def create_and_transfer_assets():
         #  iroha_admin.command('CreateAsset', asset_name='receipt',
         #               domain_id='test', precision=0),
         iroha_admin.command('AddAssetQuantity',
-                      asset_id=f'trashcoin#gigo', amount='1000.00'),
+                      asset_id=f'mohorcoin#gigo', amount='1000.00'),
             #    iroha_admin.command('TransferAsset', src_account_id='admin@test', dest_account_id='elon@test',asset_id='receipt#test', amount='4'),
             #    iroha_admin.command('TransferAsset', src_account_id='admin@test', dest_account_id='test@test',asset_id='receipt#test', amount='4')
        ]
@@ -210,7 +210,7 @@ def create_and_transfer_assets():
     IrohaCrypto.sign_transaction(tx, ADMIN_PRIVATE_KEY)
     send_transaction_and_print_status(tx)
 
-create_and_transfer_assets()
+# create_and_transfer_assets()
 
 @trace
 def transfer_asset_batch():

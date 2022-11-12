@@ -82,3 +82,8 @@ class MySubscribedCompany(APIView):
         serializer = WasteCompanySerializer(user.subscribed_company,context={'request':request})
         return Response(serializer.data)
 
+
+
+class ReedemReward(APIView):
+    def post(self,request):
+        pass

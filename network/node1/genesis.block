@@ -113,7 +113,7 @@
                        },
                        {
                           "createAsset":{
-                             "assetName":"trashcoin",
+                             "assetName":"mohorcoin",
                              "domainId":"gigo",
                              "precision":2
                           }

@@ -113,7 +113,7 @@
                        },
                        {
                           "createAsset":{
-                             "assetName":"trashcoin",
+                             "assetName":"mohorcoin",
                              "domainId":"gigo",
                              "precision":2
                           }
@@ -122,7 +122,6 @@
                           "createAccount":{
                              "accountName":"admin",
                              "domainId":"gigo",
-                             
                              "publicKey":"313a07e6384776ed95447710d15e59148473ccfc052a681317a72a69f2a49910"
                           }
                        },
