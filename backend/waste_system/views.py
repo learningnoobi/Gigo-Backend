@@ -1,7 +1,7 @@
 from django.shortcuts import render,get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import exceptions,generics,filters
+from rest_framework import exceptions,generics,filters,status
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from .models import *
 from .serializers import WasteCompanySerializer,CompanyCustomerSerializers
@@ -78,7 +78,7 @@ class MySubscribedCompany(APIView):
         user = request.user
         print('user is ',user)
         if not user.subscribed_company:
-            return Response({"detail":"Not Subscribed to any company yet!"})
+            return Response({"detail":"Not Subscribed to any company yet!"},status = status.HTTP_404_NOT_FOUND)
         serializer = WasteCompanySerializer(user.subscribed_company,context={'request':request})
         return Response(serializer.data)
 
