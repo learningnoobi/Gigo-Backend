@@ -39,7 +39,10 @@ class CompanyCustomerList(generics.ListAPIView):
 
     def get_queryset(self, *args, **kwargs):
         user = self.request.user
+        print('user is ',user)
         company = WasteManagementCompany.objects.filter(owner = user).first()
+        if not company:
+            raise exceptions.APIException("No Company Yet !")
         tracks =company.companycustomer_set.filter(is_still_a_customer=True)
         return tracks
 
@@ -67,3 +70,15 @@ class RemoveSubscribeOfCompany(APIView):
         user.save()
         CompanyCustomer.objects.filter(customer=user).update(is_still_a_customer=False)
         return Response({'detail':f'Successfully Unsubscribed to {company.name}.'})
+
+class MySubscribedCompany(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self,request):
+        user = request.user
+        print('user is ',user)
+        if not user.subscribed_company:
+            return Response({"detail":"Not Subscribed to any company yet!"})
+        serializer = WasteCompanySerializer(user.subscribed_company,context={'request':request})
+        return Response(serializer.data)
+

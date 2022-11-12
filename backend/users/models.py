@@ -55,7 +55,7 @@ class User(AbstractUser):
     avatar = models.ImageField(default='default.jpg', upload_to='avatars')
     qr_code = models.ImageField(null=True,blank=True,upload_to='qrcode')
     role = models.CharField(choices=R_TYPE, max_length=20,default='Customer')
-    subscribed_company = models.OneToOneField("waste_system.WasteManagementCompany", null=True, on_delete=models.SET_NULL)
+    subscribed_company = models.ForeignKey("waste_system.WasteManagementCompany", null=True, blank=True,on_delete=models.SET_NULL)
     
     objects = CustomUserManager()
     USERNAME_FIELD = 'email'

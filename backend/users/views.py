@@ -59,7 +59,7 @@ class RegisterUser(APIView):
             user.iroha_name = iroha_name
             out = io.BytesIO()
             qr = segno.make(iroha_name, micro=False)
-            qr.save(out, kind='png', dark='#000000', light=None, scale=3)
+            qr.save(out, kind='png', dark='#000000', light=None, scale=5)
             filename = 'qr-'+user.username+'.png'
             user.qr_code.save(filename, ContentFile(out.getvalue()), save=False)
             user.save()
@@ -76,7 +76,7 @@ class RegisterUser(APIView):
 
 class GetAccountAsset(APIView):
     permission_classes = [IsAuthenticated]
-    def get(self, request):
+    def post(self, request):
         user = request.user
         data = request.data
         private_key = data.get('private_key')
@@ -89,7 +89,7 @@ class GetAccountAsset(APIView):
 
             serialized = MessageToDict(asset_detail)['accountAssets']
             print('serialized ',asset_detail)
-            return Response({'data':serialized})
+            return Response(serialized)
         except Exception as e:
             print(e)
             raise exceptions.APIException(str(e))
